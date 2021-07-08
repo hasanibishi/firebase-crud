@@ -1,0 +1,105 @@
+<div class="content">
+    <form [formGroup]="form">
+        <div class="controls">
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput
+                       formControlName="name"
+                       autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Surname</mat-label>
+                <input matInput
+                       formControlName="surname"
+                       autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Age</mat-label>
+                <mat-select formControlName="age">
+                    <mat-option *ngFor="let i of age"
+                                [value]="i">
+                        {{i}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Country</mat-label>
+                <input matInput
+                       formControlName="country"
+                       autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Phone</mat-label>
+                <input matInput
+                       formControlName="phone"
+                       autocomplete="off">
+            </mat-form-field>
+
+            <div>
+                <button type="button"
+                        mat-raised-button
+                        color="default"
+                        (click)="clear()">
+                    <span>Clear</span>
+                </button>
+
+                <button mat-raised-button
+                        color="primary"
+                        (click)="save()"
+                        [disabled]="form.invalid">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <br>
+
+    <div class="data-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th class="tWidth50"></th>
+                    <th class="tWidth50"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of people">
+                    <td>{{p.name}}</td>
+                    <td>{{p.surname}}</td>
+                    <td>{{p.age}}</td>
+                    <td>{{p.country}}</td>
+                    <td>{{p.phone}}</td>
+                    <td>
+                        <button mat-icon-button
+                                (click)="edit(p)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <button mat-icon-button
+                                color="warn"
+                                (click)="deleteModal(p.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+                <tr class="noResult"
+                    *ngIf="!people?.length">
+                    <td colspan="5">
+                        <span>No results found</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
