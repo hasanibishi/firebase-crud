@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "fir-crud-bc2f8": {
+      "hosting": {
+        "firebase-crud": [
+          "fir-crud-bc2f8"
+        ]
+      }
+    }
+  }
+}

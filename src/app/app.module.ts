@@ -12,6 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DeleteDialogComponent } from './_components/delete-dialog/delete-dialog.component'
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import { DeleteDialogComponent } from './_components/delete-dialog/delete-dialog
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

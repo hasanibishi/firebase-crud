@@ -13,15 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PersonComponent implements OnInit {
 
-  people: IPerson[] = [
-    { id: '1', name: 'John', surname: 'Smith', age: 25, country: 'Germany', phone: '071-998-875' },
-    { id: '1', name: 'John', surname: 'Smith', age: 25, country: 'Germany', phone: '071-998-875' },
-    { id: '1', name: 'John', surname: 'Smith', age: 25, country: 'Germany', phone: '071-998-875' },
-    { id: '1', name: 'John', surname: 'Smith', age: 25, country: 'Germany', phone: '071-998-875' },
-    { id: '1', name: 'John', surname: 'Smith', age: 25, country: 'Germany', phone: '071-998-875' },
-    { id: '1', name: 'John', surname: 'Smith', age: 25, country: 'Germany', phone: '071-998-875' }
-  ];
-
+  people: IPerson[] = [];
   form!: FormGroup;
   age: number[] = [];
 
@@ -45,26 +37,38 @@ export class PersonComponent implements OnInit {
     for (let i = 10; i < 100; i++) {
       this.age.push(i);
     }
+
+    this.getPeople();
   }
 
-  save() {
+  getPeople() {
+    this.personService.getPeople()
+      .subscribe((data: any) => this.people = data);
+  }
+
+  async savePerson() {
     if (this.form.valid) {
-      // this.personService.addTicket(this.form.value, (resp: boolean) => {
-      //   if (resp)
-      //     this.snackBar.open('Successfully Inserted!', '', {
-      //       duration: 2000,
-      //       horizontalPosition: 'right',
-      //       verticalPosition: 'top',
-      //     });
-      // });
+      console.log(this.form.value);
+
+      const r = await this.personService.savePerson(this.form.value);
+      console.log(r);
+
     }
   }
 
-  update() {
+  async updatePerson() {
     if (this.form.valid) {
-
+      const r = await this.personService.updatePerson(this.form.value);
+      console.log(r);
     }
   }
+
+  // if (resp)
+  // this.snackBar.open('Successfully saved!', '', {
+  //   duration: 2000,
+  //   horizontalPosition: 'right',
+  //   verticalPosition: 'top',
+  // });
 
   edit(person: IPerson) {
     this.form.setValue({
