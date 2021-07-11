@@ -6,12 +6,18 @@
                 <mat-label>Name</mat-label>
                 <input matInput
                        formControlName="name">
+                <mat-error *ngIf="validator.name.invalid">
+                    Name is required.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Surname</mat-label>
                 <input matInput
                        formControlName="surname">
+                <mat-error *ngIf="validator.surname.invalid">
+                    Surname is required.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field>
@@ -22,12 +28,18 @@
                         {{i}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="validator.age.invalid">
+                    Age is required.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Country</mat-label>
                 <input matInput
                        formControlName="country">
+                <mat-error *ngIf="validator.country.invalid">
+                    Country is required.
+                </mat-error>
             </mat-form-field>
 
             <mat-form-field>
@@ -37,25 +49,25 @@
             </mat-form-field>
 
             <div>
+                <button mat-raised-button
+                        color="primary"
+                        (click)="addPerson()"
+                        [disabled]="form.invalid || validator.id.value">
+                    <span>Add</span>
+                </button>
+
+                <button mat-raised-button
+                        color="accent"
+                        (click)="updatePerson()"
+                        [disabled]="!validator.id.value">
+                    <span>Update</span>
+                </button>
+
                 <button type="button"
                         mat-raised-button
                         color="default"
                         (click)="clear()">
                     <span>Clear</span>
-                </button>
-
-                <button mat-raised-button
-                        color="primary"
-                        (click)="savePerson()"
-                        [disabled]="form.invalid">
-                    <span>Save</span>
-                </button>
-
-                <button mat-raised-button
-                        color="primary"
-                        (click)="updatePerson()"
-                        [disabled]="form.invalid">
-                    <span>Update</span>
                 </button>
             </div>
         </div>
@@ -85,6 +97,7 @@
                     <td>{{p.phone}}</td>
                     <td>
                         <button mat-icon-button
+                                color="primary"
                                 (click)="edit(p)">
                             <mat-icon>edit</mat-icon>
                         </button>
@@ -92,7 +105,7 @@
                     <td>
                         <button mat-icon-button
                                 color="warn"
-                                (click)="deleteModal(p.name)">
+                                (click)="deleteModal(p.id)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </td>

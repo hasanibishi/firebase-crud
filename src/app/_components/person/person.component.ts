@@ -33,6 +33,10 @@ export class PersonComponent implements OnInit {
     })
   }
 
+  get validator() {
+    return this.form.controls;
+  }
+
   ngOnInit() {
     for (let i = 10; i < 100; i++) {
       this.age.push(i);
@@ -42,33 +46,36 @@ export class PersonComponent implements OnInit {
   }
 
   getPeople() {
-    this.personService.getPeople()
-      .subscribe((data: any) => this.people = data);
+    this.personService.getPeople().subscribe(data => this.people = data);
   }
 
-  async savePerson() {
+  addPerson() {
     if (this.form.valid) {
-      console.log(this.form.value);
+      this.personService.addPerson(this.form.value);
 
-      const r = await this.personService.savePerson(this.form.value);
-      console.log(r);
+      this.snackBar.open('Successfully added!', '', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
 
+      this.clear();
     }
   }
 
-  async updatePerson() {
+  updatePerson() {
     if (this.form.valid) {
-      const r = await this.personService.updatePerson(this.form.value);
-      console.log(r);
+      this.personService.updatePerson(this.form.value);
+
+      this.snackBar.open('Successfully updated!', '', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+      });
+
+      this.clear();
     }
   }
-
-  // if (resp)
-  // this.snackBar.open('Successfully saved!', '', {
-  //   duration: 2000,
-  //   horizontalPosition: 'right',
-  //   verticalPosition: 'top',
-  // });
 
   edit(person: IPerson) {
     this.form.setValue({

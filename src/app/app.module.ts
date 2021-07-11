@@ -14,7 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DeleteDialogComponent } from './_components/delete-dialog/delete-dialog.component'
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { environment } from 'src/environments/environment';
     MatIconModule,
     MatDialogModule,
     MatSnackBarModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
   ],
   providers: [],

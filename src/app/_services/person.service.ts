@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { IPerson } from '../_models/person';
 
 @Injectable({
@@ -7,27 +9,42 @@ import { IPerson } from '../_models/person';
 })
 export class PersonService {
 
+  itemsCollection!: AngularFirestoreCollection<IPerson>;
+  items$: Observable<IPerson[]>;
+  itemDocument!: AngularFirestoreDocument<IPerson>;
+
   constructor(
     private db: AngularFirestore
-  ) { }
+  ) {
+    this.itemsCollection = db.collection('people');
 
-  getPeople() {
-    return this.db.collection('people').valueChanges();
+    this.items$ = db.collection('people').snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(a => {
+            const data = a.payload.doc.data() as IPerson;
+            data.id = a.payload.doc.id;
+            return data;
+          })
+        })
+      );
   }
 
-  savePerson(person: IPerson) {
-    person.id = this.generateGUID();
-    return this.db.collection('people').add(person);
+  getPeople() {
+    return this.items$;
+  }
+
+  addPerson(person: IPerson) {
+    this.itemsCollection.add(person);
   }
 
   updatePerson(person: IPerson) {
-    return this.db.collection('people').doc(person.id).update(person);
+    this.itemDocument = this.db.doc(`people/${person.id}`);
+    this.itemDocument.update(person);
   }
 
-  generateGUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+  deletePerson(personId: string) {
+    this.itemDocument = this.db.doc(`people/${personId}`);
+    this.itemDocument.delete();
   }
 }
